@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2014 杭州端点网络科技有限公司
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc
+             http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <context:component-scan base-package="com.renfei.blog.web.controller" />
+
+
+    <!-- 请求入口 当url找不到对应的action -->
+    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+       <beans:property name="defaultHandler" ref="index"/>
+    </beans:bean>
+
+
+    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+    <!-- 实现action返回自定义类型 默认只返回视图 -->
+    <annotation-driven>
+        <message-converters>
+            <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <beans:constructor-arg value="UTF-8"/>
+                <beans:property name="supportedMediaTypes">
+                    <util:list>
+                        <beans:value>text/plain;charset=UTF-8</beans:value>
+                        <beans:value>text/html;charset=UTF-8</beans:value>
+                    </util:list>
+                </beans:property>
+            </beans:bean>
+            <beans:bean class="com.renfei.blog.webc.converter.JsonMessageConverter"/>
+        </message-converters>
+    </annotation-driven>
+
+    <interceptors>
+        <beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <beans:property name="paramName" value="lang"/>
+        </beans:bean>
+        <beans:bean class="com.renfei.blog.webc.interceptor.LoginInterceptor"/>
+        <!--
+        <beans:bean class="io.terminus.pampas.webc.interceptor.AppInterceptor"/>
+        <beans:bean class="io.terminus.pampas.webc.interceptor.CookieInterceptor"/>
+        <beans:bean class="io.terminus.ecp.web.common.interceptor.LoginInterceptor"/>
+        <beans:bean class="io.terminus.ecp.web.common.interceptor.AuthInterceptor"/>-->
+    </interceptors>
+
+    <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <beans:property name="defaultLocale" value="cn"/>
+    </beans:bean>
+
+    <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+           <beans:property name="prefix" value="/"/>
+           <beans:property name="suffix" value=".jsp"/>
+    </beans:bean>
+
+    <!-- 支持上传文件
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/> -->
+
+</beans:beans>
