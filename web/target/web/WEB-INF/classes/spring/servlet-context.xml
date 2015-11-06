@@ -15,8 +15,14 @@
 
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!-- 自动扫描的包名 -->
     <context:component-scan base-package="com.renfei.blog.web.controller" />
 
+
+    <!-- 默认annotion-driven 使用@ResponseBody注解之后，Controller返回的对象 自动被转换成对应的json数据
+	使用该标签后 handlerMapping对象 不用再定义了，因为AnnotationDrivenBeanDefinitionParser类的152行实例化了
+	RequestMappingHandlerMapping
+    <mvc:annotation-driven/>-->
 
     <!-- 请求入口 当url找不到对应的action -->
     <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
@@ -41,6 +47,7 @@
         </message-converters>
     </annotation-driven>
 
+    <!-- 拦截器 -->
     <interceptors>
         <beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
             <beans:property name="paramName" value="lang"/>
@@ -57,7 +64,7 @@
         <beans:property name="defaultLocale" value="cn"/>
     </beans:bean>
 
-    <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+    <!--视图解释类  对模型视图名称的解析，即在模型视图名称添加前后缀 -->
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
            <beans:property name="prefix" value="/"/>
            <beans:property name="suffix" value=".jsp"/>

@@ -16,6 +16,7 @@
     <context:component-scan base-package="com.renfei.blog.user"/>
 
     <util:list id="userInterceptors" value-type="com.renfei.blog.user.UserInterceptor">
+        <!-- 可以写多个interceptor -->
        <ref bean="checkUserExistInterceptor"/>
     </util:list>
 
